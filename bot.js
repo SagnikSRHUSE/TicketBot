@@ -86,7 +86,7 @@ bot.on("message", async message => {
       let author = message.author.id;
       let createdAt = message.createdAt;
 
-      let msg = `[${createdAt}]` + ` ${author}:` + content + `\n`;
+      let msg = `[${createdAt}]` + ` ${author}: ` + content + `\n`;
 
       let ticketID = rows[0].ticketID;
       fs.appendFile(`./ticketChat-logs/${ticketID}.txt`, msg, (err) => {
