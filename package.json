@@ -1,0 +1,17 @@
+{
+  "name": "zadebot",
+  "version": "1.0.0",
+  "description": "ZadeServers Bot",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zendovo#4334",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "fs": "0.0.1-security",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.6"
+  }
+}

@@ -1,0 +1,13 @@
+[Wed Nov 14 2018 12:01:22 GMT+0530 (India Standard Time)] 231978239063490560:Logging is done
+[Wed Nov 14 2018 12:01:39 GMT+0530 (India Standard Time)] 231978239063490560:All the messages are being logged <:GWsetmyxPeepoEvil:405337570952740864>
+[Wed Nov 14 2018 12:02:35 GMT+0530 (India Standard Time)] 231978239063490560:Btw it is being logged to a .txt file
+[Wed Nov 14 2018 12:02:37 GMT+0530 (India Standard Time)] 231978239063490560:😅
+[Wed Nov 14 2018 12:02:42 GMT+0530 (India Standard Time)] 231978239063490560:locally
+[Wed Nov 14 2018 12:06:02 GMT+0530 (India Standard Time)] 142416518888554497:uh.. ok
+[Wed Nov 14 2018 12:06:29 GMT+0530 (India Standard Time)] 231978239063490560:
+[Wed Nov 14 2018 12:07:25 GMT+0530 (India Standard Time)] 142416518888554497:Is it GDPR allowed 😅
+[Wed Nov 14 2018 12:07:32 GMT+0530 (India Standard Time)] 231978239063490560:idfk
+[Wed Nov 14 2018 12:07:40 GMT+0530 (India Standard Time)] 231978239063490560:figure it out
+[Wed Nov 14 2018 12:38:01 GMT+0530 (India Standard Time)] 231978239063490560:Maybe we can just tell the user that we are recording the messages in tickets
+[Wed Nov 14 2018 12:38:29 GMT+0530 (India Standard Time)] 231978239063490560:I am pretty sure its illegal to record calls(maybe even chats) without the consent of the other.
+[Wed Nov 14 2018 12:39:39 GMT+0530 (India Standard Time)] 231978239063490560:And maybe a option a opt out to not record? (probably not)
