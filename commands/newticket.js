@@ -2,7 +2,22 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args, con) => {
 
-    message.channel.send("Creating Ticket...");
+    async function createChannel(ticketCh, author, staff) {
+        let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
+            id: author,
+            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
+          },
+          {
+            id: staff,
+            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
+          },
+          {
+            id: message.guild.defaultRole,
+            deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
+          }]);
+        ch = await ch.send("All the messages in this channel are being logged.");
+        
+    }
 
     con.query(`SELECT count FROM counter`, (err, rows) => {
 
@@ -31,18 +46,7 @@ module.exports.run = async (bot, message, args, con) => {
         var ticketlog = message.guild.channels.find("name", "ticket-log");
         if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
 
-        message.guild.createChannel(`${ticketCh}`, "text", [{
-          id: author,
-          allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
-        },
-        {
-          id: staff,
-          allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
-        },
-        {
-          id: message.guild.defaultRole,
-          deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
-        }]);
+        createChannel(ticketCh, author, staff);
 
         if(args[1]){
             var reason = args.join(" ");

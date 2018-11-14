@@ -11,3 +11,4 @@
 [Wed Nov 14 2018 12:38:01 GMT+0530 (India Standard Time)] 231978239063490560:Maybe we can just tell the user that we are recording the messages in tickets
 [Wed Nov 14 2018 12:38:29 GMT+0530 (India Standard Time)] 231978239063490560:I am pretty sure its illegal to record calls(maybe even chats) without the consent of the other.
 [Wed Nov 14 2018 12:39:39 GMT+0530 (India Standard Time)] 231978239063490560:And maybe a option a opt out to not record? (probably not)
+[Wed Nov 14 2018 14:14:15 GMT+0530 (India Standard Time)] 231978239063490560: z!closeticket
