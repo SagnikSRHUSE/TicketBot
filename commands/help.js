@@ -7,6 +7,7 @@ module.exports.run = async (bot, message, args, con, prefix) => {
         let help = new Discord.RichEmbed()
         .setDescription(`**Help Menu**\nDo ${prefix}help [type]`)
         .addField("Tickets:", "Info for tickets.")
+        .addField("Settings:", "Info about settings.")
         .setFooter("<> = Required | [] = optional")
         .setColor("#2aedcf");
         message.channel.send(help);
@@ -22,6 +23,17 @@ module.exports.run = async (bot, message, args, con, prefix) => {
         .setFooter("<> = Required | [] = optional")
         .setColor("#2aedcf");
         message.channel.send(ticketHelp);
+
+    } else if(args[0] === "settings" || args[0] === "setting"){
+
+        let settingHelp = new Discord.RichEmbed()
+        .setDescription(`**Settings**\nList of all Commands\n**ADMIN ONLY**h `)
+        .addField(`${prefix}settings list`, "Lists all settings which you can change.")
+        .addField(`${prefix}settings info <type>`, "Sends the value of the setting.")
+        .addField(`${prefix}settings set <type>`, "Sets a new value for the setting.")
+        .setFooter("<> = Required | [] = optional")
+        .setColor("#2aedcf");
+        message.channel.send(settingHelp);
 
     } else {
         message.channel.send("Not a valid type. Do `" + prefix + "help` to see the valid types.");

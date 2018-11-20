@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports.run = async (bot, message, args, con) => {
+module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole) => {
 
     async function createChannel(ticketCh, author, staff, mention) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args, con) => {
             id: mention,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
       }]);
-        ch = await ch.send("All the messages in this channel are being logged.");
+        ch = await ch.send(tc);
         
     }
 
@@ -41,22 +41,22 @@ module.exports.run = async (bot, message, args, con) => {
         let createdAt = message.createdAt;
 
         let author = message.author.id;
-        let staff = message.guild.roles.find("name", "Tickets Staff");
+        let staff = message.guild.roles.find("name", staffrole);
         if (!staff){
             message.channel.send("Error!, please contact a server admin.");
-            return console.log("Please create a role named Tickets Staff!");
+            return console.log(`Please create a role named ${staffrole}!`);
         }
         
         var ticketlog = message.guild.channels.find("name", "ticket-log");
         if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
 
         //For another user
-        if (!message.member.roles.find("name", "Tickets Staff")) return message.channel.send("Sorry, you can't create a ticket for someone else.");
+        if (!message.member.roles.find("name", staffrole)) return message.channel.send("Sorry, you can't create a ticket for someone else.");
             
         if(!message.mentions.users.first()) return message.channel.send("Please mention a user.");
         var mention = message.mentions.users.first().id;
 
-        createChannel(ticketCh, author, staff, mention);
+        createChannel(ticketCh, author, staff, mention, tc);
 
         if(args[1]){
             var str = args.join(" ");

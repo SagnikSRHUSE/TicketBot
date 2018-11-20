@@ -69,13 +69,37 @@ bot.on("message", async message => {
   if(message.author.bot) return;
   if(message.channel.type === "dm") return;
 
-  let prefix = botconfig.prefix;
-  let messageArray = message.content.split(" ");
-  let cmd = messageArray[0];
-  let args = messageArray.slice(1);
+  let prefix;
 
-  let commandfile = bot.commands.get(cmd.slice(prefix.length))
-  if(commandfile) commandfile.run(bot, message, args, con, prefix);
+  function prefixF(callback) {
+
+    con.query(`SELECT value FROM settings`, function(err, rows) {
+      if(err) {
+        callback(err, null);
+      } else {
+        callback(null, rows[0].value, rows[1].value, rows[2].value, rows[3].value);
+      }
+
+    });
+  }
+
+  prefixF(function(err, p, m, s, a){
+    if(err) throw err;
+
+    // For debugging
+    prefix = p;
+    tcMessage = m;
+    staffrole = s;
+    adminrole= a;
+
+    let messageArray = message.content.split(" ");
+    let cmd = messageArray[0];
+    let args = messageArray.slice(1);
+
+    let commandfile = bot.commands.get(cmd.slice(prefix.length))
+    if(commandfile) commandfile.run(bot, message, args, con, prefix, tcMessage, staffrole, adminrole);
+
+  });
 
   con.query(`SELECT * FROM tickets WHERE ticketID = '${message.channel.name}'`, (err, rows) => {
 
