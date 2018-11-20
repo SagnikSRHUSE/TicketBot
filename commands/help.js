@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, con, prefix) => {
         .addField("Tickets:", "Info for tickets.")
         .addField("Settings:", "Info about settings.")
         .setFooter("<> = Required | [] = optional")
-        .setColor("#2aedcf");
+        .setColor("#3def15");
         message.channel.send(help);
 
     } else if(args[0] === "tickets" || args[0] === "ticket"){
@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args, con, prefix) => {
         .addField(`${prefix}closeticket [reason]`, "Staff Only! Closes the ticket. Use it in the ticket channel itself.")
         .addField(`${prefix}ticketinfo <ticket-ID or ID>`, "Staff Only! Shows information about a ticket.")
         .setFooter("<> = Required | [] = optional")
-        .setColor("#2aedcf");
+        .setColor("#3def15");
         message.channel.send(ticketHelp);
 
     } else if(args[0] === "settings" || args[0] === "setting"){
@@ -32,7 +32,7 @@ module.exports.run = async (bot, message, args, con, prefix) => {
         .addField(`${prefix}settings info <type>`, "Sends the value of the setting.")
         .addField(`${prefix}settings set <type>`, "Sets a new value for the setting.")
         .setFooter("<> = Required | [] = optional")
-        .setColor("#2aedcf");
+        .setColor("#3def15");
         message.channel.send(settingHelp);
 
     } else {
