@@ -37,7 +37,11 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
 
         let author = message.author.id;
         let staff = message.guild.roles.find("name", staffrole);
-        //let blacklist = message.guild.roles.find("name", blacklist);
+        let blacklisted = message.guild.roles.find("name", "Blacklisted");
+
+        if (!blacklisted){
+            console.log(`There is no role called "Blacklisted"`);
+        }
         if (!staff){
             message.channel.send("Error!, please contact a server admin.");
             return console.log(`Please create a role named ${staffrole}!`);
