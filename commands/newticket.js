@@ -37,6 +37,7 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
 
         let author = message.author.id;
         let staff = message.guild.roles.find("name", staffrole);
+        //let blacklist = message.guild.roles.find("name", blacklist);
         if (!staff){
             message.channel.send("Error!, please contact a server admin.");
             return console.log(`Please create a role named ${staffrole}!`);
@@ -44,6 +45,7 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
         
         var ticketlog = message.guild.channels.find("name", "ticket-log");
         if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
+        if (!message.member.roles.find("name", "Blacklisted")) return message.channel.send("You are not allowed to make a ticket. Ask a staff member to make to make it for you.");
 
         createChannel(ticketCh, author, staff, tc);
 
