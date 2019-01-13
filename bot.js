@@ -122,5 +122,5 @@ bot.on("message", async message => {
 
 });
 
-//Login
+//Login - Hmmmmmm
 bot.login(botconfig.token);
