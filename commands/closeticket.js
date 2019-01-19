@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports.run = async (bot, message, args, con) => {
+module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole, adminrole) => {
 
     let channel = message.channel;
     let channelName = message.channel.name;
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args, con) => {
 
         if(err) throw err;
 
-        if(!message.member.roles.find("name", "Tickets Staff")) return message.channel.send("You do not have the permission to close a ticket. If you want one of your tickets to be closed please contact a staff.")
+        if(!message.member.roles.find("name", staffrole)) return message.channel.send("You do not have the permission to close a ticket. If you want one of your tickets to be closed please contact a staff.")
 
         if(rows.length < 1) {
             message.channel.send("You are not in a ticket channel! Tickets can only be closed in the channel itself.");

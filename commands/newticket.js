@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole) => {
 
-    async function createChannel(ticketCh, author, staff, tcMessage) {
+    async function createChannel(ticketCh, author, staff, tcMsg) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
             id: author,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
             id: message.guild.defaultRole,
             deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
           }]);
-        ch = await ch.send(tc);
+          ch = await ch.send(`**Reason:** ${tcMsg}`);
     }
 
     con.query(`SELECT count FROM counter`, (err, rows) => {
@@ -49,12 +49,14 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
         
         var ticketlog = message.guild.channels.find("name", "ticket-log");
         if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
-        if (!message.member.roles.find("name", "Blacklisted")) return message.channel.send("You are not allowed to make a ticket. Ask a staff member to make to make it for you.");
+        if (message.member.roles.find("name", "Blacklisted")) return message.channel.send("You are not allowed to make a ticket. Ask a staff member to make to make it for you.");
 
-        createChannel(ticketCh, author, staff, tc);
+        var tcMsg = args.join(" ");
+        createChannel(ticketCh, author, staff, tcMsg);
 
         if(args[1]){
             var reason = args.join(" ");
+            message.channel.send(reason);
             let ticketInfo;
             ticketInfo = `INSERT INTO tickets (ticketID, ticketAuthor, status, reason) VALUES ("${ticketCh}", "${author}", "open", "${reason}")`;
             con.query(ticketInfo);

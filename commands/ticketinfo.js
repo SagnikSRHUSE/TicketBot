@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
 
-module.exports.run = async (bot, message, args, con) => {
+module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole, adminrole) => {
 
     var str = args[0];
 
-    if(!message.member.roles.find("name", "Tickets Staff")) return message.channel.send("You do not have the permission to use this command.")
+    if(!message.member.roles.find("name", staffrole)) return message.channel.send("You do not have the permission to use this command.")
 
     if(str.startsWith("ticket-")){
         con.query(`SELECT * FROM tickets WHERE ticketID = '${str}'`, (err, rows) => {

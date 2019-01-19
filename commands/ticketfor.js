@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole) => {
 
-    async function createChannel(ticketCh, author, staff, mention) {
+    async function createChannel(ticketCh, author, staff, mention, tcMsg) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
             id: author,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
             id: mention,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
       }]);
-        ch = await ch.send(tc);
+        ch = await ch.send(`**Reason:** ${tcMsg}`);
         
     }
 
@@ -56,7 +56,9 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
         if(!message.mentions.users.first()) return message.channel.send("Please mention a user.");
         var mention = message.mentions.users.first().id;
 
-        createChannel(ticketCh, author, staff, mention, tc);
+        var str = args.join(" ");
+        var tcMsg = str.substr(22);
+        createChannel(ticketCh, author, staff, mention, tcMsg);
 
         if(args[1]){
             var str = args.join(" ");
