@@ -82,7 +82,7 @@ bot.on("message", async message => {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, value.adminrole[0]};
+        callback(null, value.adminrole[0]);
       }
     });  
     con.query(`SELECT value FROM settings WHERE param = 'staffrole';`, function(err, staffrole) {
