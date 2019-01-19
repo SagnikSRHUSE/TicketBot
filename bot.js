@@ -73,21 +73,24 @@ bot.on("message", async message => {
 
   function prefixF(callback) {
 
-    con.query(`SELECT value FROM settings`, function(err, rows) {
+    con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err, prefix) {
+      con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err1, tcMessage) {
+        con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err2, staffrole) {
+          con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err3, adminrole) {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, rows[0].value, rows[1].value, rows[2].value, rows[3].value);
+        callback(null, prefix[0].value, tcMessage[0].value, staffrole[0].value, adminrole[0].value);
       }
-
     });
+  });
   }
 
   prefixF(function(err, p, m, s, a){
     if(err) throw err;
  
     // For debugging
-    prefix = botconfig.prefix;
+    prefix = p;
     tcMessage = m;
     staffrole = s;
     adminrole= a;
