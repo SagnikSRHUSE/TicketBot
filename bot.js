@@ -52,9 +52,9 @@ bot.on("ready", async () => {
 
 var con = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "zendovo",
-  database: "zadebot"
+  user: "zade_tickets",
+  password: "izuir9Gezeimohciebah8eiwah6womoh",
+  database: "zade_tickets"
 });
 con.connect(err => {
   if(err) throw err;
