@@ -75,28 +75,28 @@ bot.on("message", async message => {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, prefix[0].value);
+        callback(null, value.prefix[0]);
       }
     });  
     con.query(`SELECT value FROM settings WHERE param = 'adminrole';`, function(err, adminrole) {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, adminrole[1].value);
+        callback(null, value.adminrole[1]};
       }
     });  
     con.query(`SELECT value FROM settings WHERE param = 'staffrole';`, function(err, staffrole) {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, staffrole[2].value);
+        callback(null, value.staffrole[2]);
       }
     });  
     con.query(`SELECT value FROM settings WHERE param = 'message';`, function(err, message) {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, tcMessage[3].value);
+        callback(null, value.tcMessage[3]);
       }
     }); 
   }
