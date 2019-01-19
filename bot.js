@@ -82,21 +82,21 @@ bot.on("message", async message => {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, value.adminrole[1]};
+        callback(null, value.adminrole[0]};
       }
     });  
     con.query(`SELECT value FROM settings WHERE param = 'staffrole';`, function(err, staffrole) {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, value.staffrole[2]);
+        callback(null, value.staffrole[0]);
       }
     });  
     con.query(`SELECT value FROM settings WHERE param = 'message';`, function(err, message) {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, value.tcMessage[3]);
+        callback(null, value.tcMessage[0]);
       }
     }); 
   }
