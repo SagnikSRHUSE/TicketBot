@@ -85,9 +85,9 @@ bot.on("message", async message => {
 
   prefixF(function(err, p, m, s, a){
     if(err) throw err;
-
+ 
     // For debugging
-    prefix = "z!";
+    prefix = botconfig.prefix;
     tcMessage = m;
     staffrole = s;
     adminrole= a;
