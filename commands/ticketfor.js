@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole) => {
+module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole, adminrole) => {
 
     async function createChannel(ticketCh, author, staff, mention, tcRs, tcMessage) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
