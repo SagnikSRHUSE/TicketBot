@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole) => {
 
-    async function createChannel(ticketCh, author, staff, tcMsg) {
+    async function createChannel(ticketCh, author, staff, tcRs, tcMessage) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
             id: author,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
             id: message.guild.defaultRole,
             deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
           }]);
-          ch = await ch.send(`**Reason:** ${tcMsg}`);
+          ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}`);
     }
 
     con.query(`SELECT count FROM counter`, (err, rows) => {
@@ -51,8 +51,8 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
         if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
         if (message.member.roles.find("name", "Blacklisted")) return message.channel.send("You are not allowed to make a ticket. Ask a staff member to make to make it for you.");
 
-        var tcMsg = args.join(" ");
-        createChannel(ticketCh, author, staff, tcMsg);
+        var tcRs = args.join(" ");
+        createChannel(ticketCh, author, staff, tcRs, tcMessage);
 
         if(args[1]){
             var reason = args.join(" ");
