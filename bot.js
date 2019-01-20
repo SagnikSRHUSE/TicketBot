@@ -89,16 +89,12 @@ bot.on("message", async message => {
       });
     }
 
-  prefixF(function(err, p, m, s, a){
+  prefixF(function(err, prefix, tcMessage, staffrole, adminrole){
     if(err) throw err;
  
     // For debugging - need to remove
-    prefix = p;
-    tcMessage = m;
-    staffrole = s;
-    adminrole= a;
 
-    //message.channel.send(`${prefix} ${tcMessage} ${staffrole} ${adminrole}`)
+    message.channel.send(`prefix ${prefix} \nmessage ${tcMessage} \nstaffrole ${staffrole} \nadminrole ${adminrole}`)
 
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
