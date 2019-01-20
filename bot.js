@@ -89,7 +89,7 @@ bot.on("message", async message => {
       });
     }
 
-  prefixF(function(err, p, a, s, m){
+  prefixF(function(err, p, m, s, a){
     if(err) throw err;
  
     // For debugging - need to remove
