@@ -52,9 +52,9 @@ bot.on("ready", async () => {
 
 var con = mysql.createConnection({
   host: "localhost",
-  user: "zade_tickets",
-  password: "izuir9Gezeimohciebah8eiwah6womoh",
-  database: "zade_tickets"
+  user: "root",
+  password: "zendovo",
+  database: "zadebot"
 });
 con.connect(err => {
   if(err) throw err;
@@ -72,9 +72,9 @@ bot.on("message", async message => {
   function prefixF(callback) {
 
     con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err, prefixD) {
-      con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err1, tcMessageD) {
-        con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err2, staffroleD) {
-          con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err3, adminroleD) {
+      con.query(`SELECT value FROM settings WHERE param = 'message';`, function(err1, tcMessageD) {
+        con.query(`SELECT value FROM settings WHERE param = 'staffrole';`, function(err2, staffroleD) {
+          con.query(`SELECT value FROM settings WHERE param = 'adminrole';`, function(err3, adminroleD) {
             if(err) {
               callback(err, null);
              } else {
@@ -95,7 +95,8 @@ bot.on("message", async message => {
     staffrole = s;
     adminrole= a;
 
-    message.channel.send(`${prefix} ${tcMessage} ${staffrole} ${adminrole}`)
+    //message.channel.send(`${prefix} ${tcMessage} ${staffrole} ${adminrole}`)
+
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
@@ -104,6 +105,11 @@ bot.on("message", async message => {
     if(commandfile) commandfile.run(bot, message, args, con, prefix, tcMessage, staffrole, adminrole);
 
   });
+
+  //Folder check
+  if (!fs.existsSync("./ticketChat-logs")){
+    fs.mkdirSync("./ticketChat-logs");
+  }
 
   con.query(`SELECT * FROM tickets WHERE ticketID = '${message.channel.name}'`, (err, rows) => {
 
