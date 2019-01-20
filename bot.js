@@ -71,45 +71,31 @@ bot.on("message", async message => {
 
   function prefixF(callback) {
 
-    con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err, prefix) {
-      if(err) {
-        callback(err, null);
-      } else {
-        callback(value.prefix[0]);
-      }
-    });  
-    con.query(`SELECT value FROM settings WHERE param = 'adminrole';`, function(err, adminrole) {
-      if(err) {
-        callback(err, null);
-      } else {
-        callback(value.adminrole[0]);
-      }
-    });  
-    con.query(`SELECT value FROM settings WHERE param = 'staffrole';`, function(err, staffrole) {
-      if(err) {
-        callback(err, null);
-      } else {
-        callback(value.staffrole[0]);
-      }
-    });  
-    con.query(`SELECT value FROM settings WHERE param = 'message';`, function(err, message) {
-      if(err) {
-        callback(err, null);
-      } else {
-        callback(value.tcMessage[0]);
-      }
-    }); 
-  }
+    con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err, prefixD) {
+      con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err1, tcMessageD) {
+        con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err2, staffroleD) {
+          con.query(`SELECT value FROM settings WHERE param = 'prefix';`, function(err3, adminroleD) {
+            if(err) {
+              callback(err, null);
+             } else {
+              callback(null, prefixD[0].value, tcMessageD[0].value, staffroleD[0].value, adminroleD[0].value);
+             }
+           });
+         });
+        });
+      });
+    }
 
   prefixF(function(err, p, a, s, m){
     if(err) throw err;
  
-    // For debugging
+    // For debugging - need to remove
     prefix = p;
     tcMessage = m;
     staffrole = s;
     adminrole= a;
 
+    message.channel.send(`${prefix} ${tcMessage} ${staffrole} ${adminrole}`)
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
