@@ -41,7 +41,7 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
             let role = roleArray.join(" ");
             
             con.query(`UPDATE settings SET value = '${role}' WHERE param = 'staffRole';`);
-            message.channel.send("Set message to `" + role + "`");
+            message.channel.send("Set staff role to `" + role + "`");
 
         } else if(args[1] === "adminrole" || args[1] === "admin role") {
 
@@ -51,7 +51,7 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
             let role = roleArray.join(" ");
             
             con.query(`UPDATE settings SET value = '${role}' WHERE param = 'adminRole';`);
-            message.channel.send("Set message to `" + role + "`");
+            message.channel.send("Set admin role to `" + role + "`");
 
         } else {
 

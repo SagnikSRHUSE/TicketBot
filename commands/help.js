@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args, con, prefix) => {
     } else if(args[0] === "settings" || args[0] === "setting"){
 
         let settingHelp = new Discord.RichEmbed()
-        .setDescription(`**Settings**\nList of all Commands\n**ADMIN ONLY**h `)
+        .setDescription(`**Settings**\nList of all Commands\n**ADMIN ONLY**`)
         .addField(`${prefix}settings list`, "Lists all settings which you can change.")
         .addField(`${prefix}settings info <type>`, "Sends the value of the setting.")
         .addField(`${prefix}settings set <type>`, "Sets a new value for the setting.")
