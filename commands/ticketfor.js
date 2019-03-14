@@ -64,7 +64,9 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
             var str = args.join(" ");
             var reason = str.substr(22);
             let ticketInfo;
-            ticketInfo = `INSERT INTO tickets (ticketID, ticketAuthor, ticketFor, status, reason) VALUES ("${ticketCh}", "${author}", "${mention}", "open", "${reason}")`;
+            let freason = reason;
+            if (freason.contains("'")) freason.replace("'", "");
+            ticketInfo = `INSERT INTO tickets (ticketID, ticketAuthor, ticketFor, status, reason) VALUES ("${ticketCh}", "${author}", "${mention}", "open", "${freason}")`;
             con.query(ticketInfo);
             message.channel.send("Ticket Created!");
             var createdticketEmbed = new Discord.RichEmbed()

@@ -43,6 +43,7 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
                 channel.delete();
 
                 let closeReason = args.join(" ");
+                if (closeReason.contains("'")) closeReason.replace("'", "");
                 con.query(`UPDATE tickets SET closeReason = '${closeReason}' WHERE ticketID = '${channelName}'`);
     
                 var closeTicket = new Discord.RichEmbed()
