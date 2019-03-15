@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+var randomstring = require("randomstring");
 
 module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, adminrole) => {
 
