@@ -23,79 +23,62 @@ module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrol
         
     }
 
-    con.query(`SELECT count FROM counter`, (err, rows) => {
+    //Creation of Ticket
+    let ticketID = randomstring.generate(5);
+    let ticketCh = `ticket-${ticketID}`;
 
-        //Counter
-        if(err) throw err;
+    while (message.guild.channels.find("name", ticketCh)) {
+        ticketID = randomstring.generate(5);
+        ticketCh = `ticket-${ticketID}`;
+    }
+    
+    let createdAt = message.createdAt;
 
-        let count;
-        let c = rows[0].count;
+    let author = message.author.id;
+    let staff = message.guild.roles.find("name", staffrole);
+    if (!staff){
+        message.channel.send("Error!, please contact a server admin.");
+        return console.log(`Please create a role named ${staffrole}!`);
+    }
+    
+    var ticketlog = message.guild.channels.find("name", "ticket-log");
+    if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
 
-        count = `UPDATE counter SET count = ${c + 1}`;
-
-        con.query(count);
-
-        //Creation of Ticket
-        let ticketID = rows[0].count + 1;
-        let ticketCh = `ticket-${ticketID}`;
-        let createdAt = message.createdAt;
-
-        let author = message.author.id;
-        let staff = message.guild.roles.find("name", staffrole);
-        if (!staff){
-            message.channel.send("Error!, please contact a server admin.");
-            return console.log(`Please create a role named ${staffrole}!`);
-        }
+    //For another user
+    if (!message.member.roles.find("name", staffrole)) return message.channel.send("Sorry, you can't create a ticket for someone else.");
         
-        var ticketlog = message.guild.channels.find("name", "ticket-log");
-        if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
+    if(!message.mentions.users.first()) return message.channel.send("Please mention a user.");
+    var mention = message.mentions.users.first().id;
 
-        //For another user
-        if (!message.member.roles.find("name", staffrole)) return message.channel.send("Sorry, you can't create a ticket for someone else.");
-            
-        if(!message.mentions.users.first()) return message.channel.send("Please mention a user.");
-        var mention = message.mentions.users.first().id;
+    var str = args.join(" ");
+    var tcRs = str.substr(22);
+    createChannel(ticketCh, author, staff, mention, tcRs, tcMessage);
 
+    if(args[1]){
         var str = args.join(" ");
-        var tcRs = str.substr(22);
-        createChannel(ticketCh, author, staff, mention, tcRs, tcMessage);
-
-        if(args[1]){
-            var str = args.join(" ");
-            var reason = str.substr(22);
-            let ticketInfo;
-            let freason = reason;
-            if (freason.contains("'")) freason.replace("'", "");
-            ticketInfo = `INSERT INTO tickets (ticketID, ticketAuthor, ticketFor, status, reason) VALUES ("${ticketCh}", "${author}", "${mention}", "open", "${freason}")`;
-            con.query(ticketInfo);
-            message.channel.send("Ticket Created!");
-            var createdticketEmbed = new Discord.RichEmbed()
-              .setDescription("**Ticket Created**")
-              .setColor("#3def15")
-              .addField("Created by:", `${message.author}`, true)
-              .addField("Ticket-ID:", `${ticketCh}`, true)
-              .addField("Created At:", `${createdAt}`, true)
-              .addField("Reason:", `${reason}`, true)
-              .setFooter(`User ID: ${author}`);
-            ticketlog.send(createdticketEmbed);
-        } else {
-            let ticketInfo;
-            ticketInfo = `INSERT INTO tickets (ticketID, ticketAuthor, ticketFor, status) VALUES ("${ticketCh}", "${author}", "${mention}", "open")`;
-            con.query(ticketInfo);
-            message.channel.send("Ticket Created!");
-            var createdticketEmbed = new Discord.RichEmbed()
-              .setDescription("**Ticket Created**")
-              .setColor("#3def15")
-              .addField("Created by:", `${message.author}`, true)
-              .addField("Ticket-ID:", `${ticketCh}`, true)
-              .addField("Created At:", `${createdAt}`, true)
-              .addField("Reason:", "Not Defined", true)
-              .setFooter(`User ID: ${author}`);
-            ticketlog.send(createdticketEmbed);
-        }
-
-
-    });
+        var reason = str.substr(22);
+        message.channel.send("Ticket Created!");
+        var createdticketEmbed = new Discord.RichEmbed()
+          .setDescription("**Ticket Created**")
+          .setColor("#3def15")
+          .addField("Created by:", `${message.author}`, true)
+          .addField("Ticket-ID:", `${ticketCh}`, true)
+          .addField("Created At:", `${createdAt}`, true)
+          .addField("Reason:", `${reason}`, true)
+          .setFooter(`User ID: ${author}`);
+        ticketlog.send(createdticketEmbed);
+    } else {
+        message.channel.send("Ticket Created!");
+        var createdticketEmbed = new Discord.RichEmbed()
+          .setDescription("**Ticket Created**")
+          .setColor("#3def15")
+          .addField("Created by:", `${message.author}`, true)
+          .addField("Ticket-ID:", `${ticketCh}`, true)
+          .addField("Created At:", `${createdAt}`, true)
+          .addField("Reason:", "Not Defined", true)
+          .setFooter(`User ID: ${author}`);
+        ticketlog.send(createdticketEmbed);
+    }
 
 }
 
