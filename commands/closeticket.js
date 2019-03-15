@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole, adminrole) => {
+module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, adminrole) => {
 
     let channel = message.channel;
     let channelName = message.channel.name;

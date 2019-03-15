@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 var randomstring = require("randomstring");
 
-module.exports.run = async (bot, message, args, con, prefix, tcMessage, staffrole, adminrole) => {
+module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, adminrole) => {
 
     async function createChannel(ticketCh, author, staff, tcRs, tcMessage) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
