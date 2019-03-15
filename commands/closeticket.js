@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
 
     if(!message.member.roles.find("name", staffrole)) return message.channel.send("You do not have the permission to close a ticket. If you want one of your tickets to be closed please contact a staff.")
 
-    if(rows.length < 1) {
+    if(!message.channel.name.startsWith("ticket") || message.channel.name == "ticket-log") {
         message.channel.send("You are not in a ticket channel! Tickets can only be closed in the channel itself.");
 
     } else {
