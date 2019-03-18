@@ -7,6 +7,7 @@ module.exports.run = async (bot, message, args, prefix) => {
 
     bot.destroy();
     if (!args[0]) return bot.login(botconfig.token);
+    message.channel.send("Restarting!");
 
     if (args[0]){
         let timeInS = parseInt(args[0], 10) || 0;
