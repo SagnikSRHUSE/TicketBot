@@ -2,9 +2,9 @@ const Discord = require("discord.js");
 var randomstring = require("randomstring");
 const fs = require("fs");
 
-module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, adminrole) => {
+module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
 
-    async function createChannel(ticketCh, author, staff, tcRs, tcMessage) {
+    async function createChannel(ticketCh, author, staff, tcRs, tcMessages) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
             id: author,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
@@ -17,7 +17,9 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
             id: message.guild.defaultRole,
             deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
           }]);
-          ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}\n${staff}`);
+          ch = await ch.send(tcMessages[0]).then(msg => {
+            ch.send(tcMessages[1]);
+          });
     }
 
     //Creation of Ticket
@@ -53,37 +55,35 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
     if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
     if (message.member.roles.find("name", "Blacklisted")) return message.channel.send("You are not allowed to make a ticket. Ask a staff member to make it for you.");
 
-    var tcRs = args.join(" ");
-    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, `${author}\nThe above is your ID.\nReason: ${reason}\n\n`, (err) => {
+    function reason() {
+      if(args[0]) tcRs = args.join(" ");
+      else tcRs = "Not defined";
+    }
+    reason();
+    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, `${author}\nThe above is your ID.\nReason: ${tcRs}\n\n`, (err) => {
       if (err) throw err;
     });
-    createChannel(ticketCh, author, staff, tcRs, tcMessage);
 
-    if(args[1]){
-        var reason = args.join(" ");
-        message.channel.send(reason);
-        message.channel.send("Ticket Created!");
-        var createdticketEmbed = new Discord.RichEmbed()
-          .setDescription("**Ticket Created**")
-          .setColor("#3def15")
-          .addField("Created by:", `${message.author}`, true)
-          .addField("Ticket-ID:", `${ticketCh}`, true)
-          .addField("Created At:", `${createdAt}`, true)
-          .addField("Reason:", `${reason}`, true)
-          .setFooter(`User ID: ${author}`);
-        ticketlog.send(createdticketEmbed);
-    } else {
-        message.channel.send("Ticket Created!");
-        var createdticketEmbed = new Discord.RichEmbed()
-          .setDescription("**Ticket Created**")
-          .setColor("#3def15")
-          .addField("Created by:", `${message.author}`, true)
-          .addField("Ticket-ID:", `${ticketCh}`, true)
-          .addField("Created At:", `${createdAt}`, true)
-          .addField("Reason:", "Not defined", true)
-          .setFooter(`User ID: ${author}`);
-        ticketlog.send(createdticketEmbed);
-    }
+    let tcMessage0 = new Discord.RichEmbed()
+      .setDescription(`Hey, <@${author}>!\nThanks for opening a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nZade Servers Staff`)
+      .setColor("#74A33B")
+      .addField("Ticket-ID", ticketCh, true)
+      .addField("Reason", tcRs, true);
+    let tcMessage1 = `(${staffrole}) Attention! Someone has just opened a support ticket!`
+    let tcMessages = [tcMessage0, tcMessage1];
+    createChannel(ticketCh, author, staff, tcRs, tcMessages);
+
+    var reason = args.join(" ");
+    message.channel.send("Ticket Created!");
+    var createdticketEmbed = new Discord.RichEmbed()
+      .setDescription("**Ticket Created**")
+      .setColor("#3def15")
+      .addField("Created by:", `${message.author}`, true)
+      .addField("Ticket-ID:", `${ticketCh}`, true)
+      .addField("Created At:", `${createdAt}`, true)
+      .addField("Reason:", `${tcRs}`, true)
+      .setFooter(`User ID: ${author}`);
+    ticketlog.send(createdticketEmbed);
 }
 
 

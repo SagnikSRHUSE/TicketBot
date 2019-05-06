@@ -2,9 +2,9 @@ const Discord = require("discord.js");
 var randomstring = require("randomstring");
 const fs = require("fs");
 
-module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, adminrole) => {
+module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
 
-    async function createChannel(ticketCh, author, staff, mention, tcRs, tcMessage) {
+    async function createChannel(ticketCh, author, staff, mention, tcRs, tcMessages) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
             id: author,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
@@ -21,7 +21,9 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
             id: mention,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
       }]);
-      ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}\n${staff}`);
+      ch = await ch.send(tcMessages[0]).then(msg => {
+        ch.send(tcMessages[1]);
+      });
         
     }
 
@@ -57,39 +59,35 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
         
     if(!message.mentions.users.first()) return message.channel.send("Please mention a user.");
     var mention = message.mentions.users.first().id;
-    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, `${mention}\nThe above is your ID.\nReason: ${reason}\n\n`, (err) => {
+    var str = args.join(" ");
+    function reason() {
+      if(args[0]) tcRs = str.substr(22);
+      else tcRs = "Not defined";
+    }
+    reason();
+    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, `${mention}\nThe above is your ID.\nReason: ${tcRs}\n\n`, (err) => {
       if (err) throw err;
     });
 
-    var str = args.join(" ");
-    var tcRs = str.substr(22);
-    createChannel(ticketCh, author, staff, mention, tcRs, tcMessage);
+    let tcMessage0 = new Discord.RichEmbed()
+    .setDescription(`Hey, <@${author}>!\nThanks for opening a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nZade Servers Staff`)
+    .setColor("#74A33B")
+    .addField("Ticket-ID", ticketCh, true)
+    .addField("Reason", tcRs, true);
+    let tcMessage1 = `(${staffrole}) Attention! Someone has just opened a support ticket!`
+    let tcMessages = [tcMessage0, tcMessage1];
+    createChannel(ticketCh, author, staff, mention, tcRs, tcMessages);
 
-    if(args[1]){
-        var str = args.join(" ");
-        var reason = str.substr(22);
-        message.channel.send("Ticket Created!");
-        var createdticketEmbed = new Discord.RichEmbed()
-          .setDescription("**Ticket Created**")
-          .setColor("#3def15")
-          .addField("Created by:", `${message.author}`, true)
-          .addField("Ticket-ID:", `${ticketCh}`, true)
-          .addField("Created At:", `${createdAt}`, true)
-          .addField("Reason:", `${reason}`, true)
-          .setFooter(`User ID: ${author}`);
-        ticketlog.send(createdticketEmbed);
-    } else {
-        message.channel.send("Ticket Created!");
-        var createdticketEmbed = new Discord.RichEmbed()
-          .setDescription("**Ticket Created**")
-          .setColor("#3def15")
-          .addField("Created by:", `${message.author}`, true)
-          .addField("Ticket-ID:", `${ticketCh}`, true)
-          .addField("Created At:", `${createdAt}`, true)
-          .addField("Reason:", "Not Defined", true)
-          .setFooter(`User ID: ${author}`);
-        ticketlog.send(createdticketEmbed);
-    }
+    message.channel.send("Ticket Created!");
+    var createdticketEmbed = new Discord.RichEmbed()
+      .setDescription("**Ticket Created**")
+      .setColor("#3def15")
+      .addField("Created by:", `${message.author}`, true)
+      .addField("Ticket-ID:", `${ticketCh}`, true)
+      .addField("Created At:", `${createdAt}`, true)
+      .addField("Reason:", `${tcRs}`, true)
+      .setFooter(`User ID: ${author}`);
+    ticketlog.send(createdticketEmbed);
 
 }
 

@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
-module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, adminrole) => {
+module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
 
     let channel = message.channel;
     let channelName = message.channel.name;
@@ -15,11 +15,17 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
 
     } else {
 
+        let log = new Discord.RichEmbed()
+          .setDescription(`Thank you for creating a ticket on Zade Servers!\nHopefully you're satisfied!\n\nKind Regards,\nZade Servers Staff`)
+          .setColor("#74A33B");
+
         var fl = require("firstline");
         fl(`./ticketChat-logs/${message.channel.name}.txt`).then((out) => {
             id = out.replace(" ", "");
             console.log(id);
-            bot.users.get(id).send("Thanks for using ZadeTickets! \n Here is a log of the conversation:", { files: [`./ticketChat-logs/${message.channel.name}.txt`]});
+            bot.users.get(id).send(log).then(msg => {
+                bot.users.get(id).send("Here is a log of the conversation:", { files: [`./ticketChat-logs/${message.channel.name}.txt`]});
+            })
         }).catch((id) => {
             console.log("Error sending logs!");
         });

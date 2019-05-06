@@ -41,7 +41,6 @@ bot.on("message", async message => {
   if(message.channel.type === "dm") return;
  
   let prefix = "-";
-  let tcMessage = "Hello there! Your ticket will be responded to as soon as possible!";
   let staffrole = "Support";
   let adminrole = "Development";
 
@@ -50,7 +49,7 @@ bot.on("message", async message => {
   let args = messageArray.slice(1);
 
   let commandfile = bot.commands.get(cmd.slice(prefix.length))
-  if(commandfile) commandfile.run(bot, message, args, prefix, tcMessage, staffrole, adminrole);
+  if(commandfile) commandfile.run(bot, message, args, prefix, staffrole, adminrole);
 
   if(message.channel.name.startsWith("ticket-")) {
 
