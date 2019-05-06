@@ -4,7 +4,7 @@ const fs = require("fs");
 
 module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
 
-    async function createChannel(ticketCh, author, staff, mention, tcRs, tcMessages) {
+    async function createChannel(ticketCh, author, staff, mention, tcMessages) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
             id: author,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
@@ -59,9 +59,10 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         
     if(!message.mentions.users.first()) return message.channel.send("Please mention a user.");
     var mention = message.mentions.users.first().id;
-    var str = args.join(" ");
+
     function reason() {
-      if(args[0]) tcRs = str.substr(22);
+      var str = args.join(" ");
+      if(args[1]) tcRs = str.substr(22);
       else tcRs = "Not defined";
     }
     reason();
@@ -70,13 +71,13 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
     });
 
     let tcMessage0 = new Discord.RichEmbed()
-    .setDescription(`Hey, <@${author}>!\nThanks for opening a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nZade Servers Staff`)
-    .setColor("#74A33B")
-    .addField("Ticket-ID", ticketCh, true)
-    .addField("Reason", tcRs, true);
+      .setDescription(`Hey, <@${mention}>!\nThanks for opening a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nZade Servers Staff`)
+      .setColor("#74A33B")
+      .addField("Ticket-ID", ticketCh, true)
+      .addField("Reason", tcRs, true);
     let tcMessage1 = `(${staff}) Attention! Someone has just opened a support ticket!`
     let tcMessages = [tcMessage0, tcMessage1];
-    createChannel(ticketCh, author, staff, mention, tcRs, tcMessages);
+    createChannel(ticketCh, author, staff, mention, tcMessages);
 
     message.channel.send("Ticket Created!");
     var createdticketEmbed = new Discord.RichEmbed()

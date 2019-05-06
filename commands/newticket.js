@@ -4,7 +4,7 @@ const fs = require("fs");
 
 module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
 
-    async function createChannel(ticketCh, author, staff, tcRs, tcMessages) {
+    async function createChannel(ticketCh, author, staff, tcMessages) {
         let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
             id: author,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
@@ -71,9 +71,8 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
       .addField("Reason", tcRs, true);
     let tcMessage1 = `(${staff}) Attention! Someone has just opened a support ticket!`
     let tcMessages = [tcMessage0, tcMessage1];
-    createChannel(ticketCh, author, staff, tcRs, tcMessages);
+    createChannel(ticketCh, author, staff, tcMessages);
 
-    var reason = args.join(" ");
     message.channel.send("Ticket Created!");
     var createdticketEmbed = new Discord.RichEmbed()
       .setDescription("**Ticket Created**")
