@@ -74,7 +74,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
     .setColor("#74A33B")
     .addField("Ticket-ID", ticketCh, true)
     .addField("Reason", tcRs, true);
-    let tcMessage1 = `(${staffrole}) Attention! Someone has just opened a support ticket!`
+    let tcMessage1 = `(${staff}) Attention! Someone has just opened a support ticket!`
     let tcMessages = [tcMessage0, tcMessage1];
     createChannel(ticketCh, author, staff, mention, tcRs, tcMessages);
 
