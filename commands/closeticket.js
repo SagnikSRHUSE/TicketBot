@@ -30,30 +30,22 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
             console.log("Error sending logs!");
         });
 
-        if(!args[0]){
-            channel.delete();
-            var closeTicket = new Discord.RichEmbed()
-              .setDescription("**Ticket Closed**")
-              .setColor("#ed3434")
-              .addField("Ticket Closed by:", `${message.author}`, true)
-              .addField("Closed At:", `${closedAt}`, true)
-              .addField("Ticket-ID:", `${channelName}`, true)
-              .addField("Closing Reason:", `Not defined`, true);
-            ticketlog.send(closeTicket);
+        function cReason() {
+            if(args[0]) closeReason = args.join(" ");
+            else closeReason = "Not defined";
+          }
+        cReason();
 
-        } else {
-            channel.delete();
-            let closeReason = args.join(" ");
-            var closeTicket = new Discord.RichEmbed()
-              .setDescription("**Ticket Closed**")
-              .setColor("#ed3434")
-              .addField("Ticket Closed by:", `${message.author}`, true)
-              .addField("Closed At:", `${closedAt}`, true)
-              .addField("Ticket-ID:", `${channelName}`, true)
-              .addField("Closing Reason:", `${closeReason}`, true);
-            ticketlog.send(closeTicket);
-
-        }
+        channel.delete();
+        let closeReason = args.join(" ");
+        var closeTicket = new Discord.RichEmbed()
+          .setDescription("**Ticket Closed**")
+          .setColor("#ed3434")
+          .addField("Ticket Closed by:", `${message.author}`, true)
+          .addField("Closed At:", `${closedAt}`, true)
+          .addField("Ticket-ID:", `${channelName}`, true)
+          .addField("Closing Reason:", `${closeReason}`, true);
+        ticketlog.send(closeTicket);
 
     }
 
