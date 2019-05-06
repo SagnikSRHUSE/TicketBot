@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 var randomstring = require("randomstring");
+const fs = require("fs");
 
 module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, adminrole) => {
 
@@ -20,16 +21,22 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
             id: mention,
             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
       }]);
-      ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}\n<@${staff}>`);
+      ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}\n${staff}`);
         
     }
 
     //Creation of Ticket
-    let ticketID = randomstring.generate(5);
+    let ticketID = randomstring.generate({
+      length: 5,
+      capitalization: "lowercase"
+    });
     let ticketCh = `ticket-${ticketID}`;
 
     while (message.guild.channels.find("name", ticketCh)) {
-        ticketID = randomstring.generate(5);
+        ticketID = randomstring.generate({
+          length: 5,
+          capitalization: "lowercase"
+        });
         ticketCh = `ticket-${ticketID}`;
     }
     
@@ -50,6 +57,9 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
         
     if(!message.mentions.users.first()) return message.channel.send("Please mention a user.");
     var mention = message.mentions.users.first().id;
+    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, `${mention}\nThe above is your ID.\nReason: ${reason}\n\n`, (err) => {
+      if (err) throw err;
+    });
 
     var str = args.join(" ");
     var tcRs = str.substr(22);

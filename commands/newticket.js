@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 var randomstring = require("randomstring");
+const fs = require("fs");
 
 module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, adminrole) => {
 
@@ -16,15 +17,21 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
             id: message.guild.defaultRole,
             deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
           }]);
-          ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}\n<@${staff}>`);
+          ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}\n${staff}`);
     }
 
     //Creation of Ticket
-    let ticketID = randomstring.generate(5);
+    let ticketID = randomstring.generate({
+      length: 5,
+      capitalization: "lowercase"
+    });
     let ticketCh = `ticket-${ticketID}`;
 
     while (message.guild.channels.find("name", ticketCh)) {
-        ticketID = randomstring.generate(5);
+        ticketID = randomstring.generate({
+          length: 5,
+          capitalization: "lowercase"
+        });
         ticketCh = `ticket-${ticketID}`;
     }
 
@@ -47,6 +54,9 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
     if (message.member.roles.find("name", "Blacklisted")) return message.channel.send("You are not allowed to make a ticket. Ask a staff member to make it for you.");
 
     var tcRs = args.join(" ");
+    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, `${author}\nThe above is your ID.\nReason: ${reason}\n\n`, (err) => {
+      if (err) throw err;
+    });
     createChannel(ticketCh, author, staff, tcRs, tcMessage);
 
     if(args[1]){

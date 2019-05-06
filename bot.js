@@ -30,6 +30,11 @@ bot.on("ready", async () => {
   bot.user.setActivity("-help");
 });
 
+//Folder check
+if (!fs.existsSync("./ticketChat-logs")){
+  fs.mkdirSync("./ticketChat-logs");
+}
+
 //On Message
 bot.on("message", async message => {
   if(message.author.bot) return;
@@ -46,6 +51,20 @@ bot.on("message", async message => {
 
   let commandfile = bot.commands.get(cmd.slice(prefix.length))
   if(commandfile) commandfile.run(bot, message, args, prefix, tcMessage, staffrole, adminrole);
+
+  if(message.channel.name.startsWith("ticket-")) {
+
+    let content = message.content;
+    let author = message.author.id;
+    let createdAt = message.createdAt;
+
+    let ticketCh = message.channel.name;
+    let msg = `[${createdAt}]` + ` ${author}: ` + content + `\n`;
+    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, msg, (err) => {
+      if (err) throw err;
+    });
+
+  }
 
 });
 
