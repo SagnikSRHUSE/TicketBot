@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args, prefix, tcMessage, staffrole, ad
             id: message.guild.defaultRole,
             deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
           }]);
-          ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}`);
+          ch = await ch.send(`${tcMessage}\n**Reason:** ${tcRs}\n<@${staff}>`);
     }
 
     //Creation of Ticket

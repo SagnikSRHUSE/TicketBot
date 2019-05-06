@@ -27,7 +27,7 @@ fs.readdir("./commands/", (err, files) => {
 //On Ready
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is online`);
-  bot.user.setActivity("z!help");
+  bot.user.setActivity("-help");
 });
 
 //On Message
@@ -35,7 +35,7 @@ bot.on("message", async message => {
   if(message.author.bot) return;
   if(message.channel.type === "dm") return;
  
-  let prefix = "z!";
+  let prefix = "-";
   let tcMessage = "Hello there! Your ticket will be responded to as soon as possible!";
   let staffrole = "Support";
   let adminrole = "Development";

@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+var randomstring = require("randomstring");
 
 module.exports.run = async (bot, message, args, prefix) => {
 
@@ -11,7 +12,7 @@ module.exports.run = async (bot, message, args, prefix) => {
         .setColor("#3def15");
         message.channel.send(help);
 
-    } else if(args[0] === "tickets" || args[0] === "ticket"){
+    } else if(args[0].toLowerCase() === "tickets" || args[0].toLowerCase() === "ticket"){
 
         let ticketHelp = new Discord.RichEmbed()
         .setDescription(`**Tickets**\nList of all Commands`)
@@ -23,7 +24,21 @@ module.exports.run = async (bot, message, args, prefix) => {
         message.channel.send(ticketHelp);
 
     } else {
-        message.channel.send("Not a valid type. Do `" + prefix + "help` to see the valid types.");
+        let embed = new Discord.RichEmbed()
+        .setDescription(":stop_sign: Topic not found!")
+        .setFooter("ZadeServers - my.zadeservers.net");
+
+        let v = randomstring.generate({
+            length: 1,
+            charset: '12'
+        });
+        if(v == 1){
+            embed.addField("https://bit.ly/1QgQ0gI", "This may be useful!");
+            message.channel.send(embed);
+        } else {
+            embed.addField("https://bit.ly/2YhCgdV", "This may be useful!");
+            message.channel.send(embed);
+        }
     }
 
 }
