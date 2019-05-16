@@ -37,7 +37,6 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         cReason();
 
         channel.delete();
-        let closeReason = args.join(" ");
         var closeTicket = new Discord.RichEmbed()
           .setDescription("**Ticket Closed**")
           .setColor("#ed3434")
