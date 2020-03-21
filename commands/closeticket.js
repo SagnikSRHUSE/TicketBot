@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
     } else {
 
         let log = new Discord.RichEmbed()
-          .setDescription(`Thank you for creating a ticket on Zade Servers!\nHopefully you're satisfied!\n\nKind Regards,\nZade Servers Staff`)
+          .setDescription(`Thank you for creating a ticket on Ambyre Nodes!\nHopefully you're satisfied!\n\nKind Regards,\nAmbyre Nodes Staff`)
           .setColor("#74A33B");
 
         var fl = require("firstline");
