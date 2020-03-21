@@ -26,7 +26,7 @@ module.exports.run = async (bot, message, args, prefix) => {
     } else {
         let embed = new Discord.RichEmbed()
         .setDescription(":stop_sign: Topic not found!")
-        .setFooter("ZadeServers - my.zadeservers.net");
+        .setFooter("Ambyre Nodes - my.ambyrenodes.net");
 
         let v = randomstring.generate({
             length: 1,
