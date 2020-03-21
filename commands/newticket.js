@@ -65,7 +65,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
     });
 
     let tcMessage0 = new Discord.RichEmbed()
-      .setDescription(`Hey, <@${author}>!\nThanks for opening a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nZade Servers Staff`)
+      .setDescription(`Hey, <@${author}>!\nThanks for opening a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nAmbyre Nodes Staff`)
       .setColor("#74A33B")
       .addField("Ticket-ID", ticketCh, true)
       .addField("Reason", tcRs, true);
