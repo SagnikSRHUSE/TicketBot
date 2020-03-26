@@ -16,9 +16,9 @@ fs.readdir("./commands/", (err, files) => {
     return;
   }
 
-  jsfile.forEach((f, i) =>{
-    let props = require(`./commands/${f}`);
-    console.log(`${f} loaded!`);
+  jsfile.forEach(file =>{
+    let props = require(`./commands/${file}`);
+    console.log(`${file} loaded!`);
     bot.commands.set(props.help.name, props);
   });
 
