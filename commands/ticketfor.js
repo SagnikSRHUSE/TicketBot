@@ -42,7 +42,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         .setColor("#3def15")
         .addField("Created by:", `${message.author}`, true)
         .addField("Ticket-ID:", `${ticketName}`, true)
-        .addField("Created for:", `${meention}`, true)
+        .addField("Created for:", `${mention}`, true)
         .addField("Created At:", `${message.createdAt}`, false)
         .addField("Reason:", `${reason}`, false)
         .setFooter("User ID: " + mention);
