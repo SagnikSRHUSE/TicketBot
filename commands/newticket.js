@@ -1,90 +1,50 @@
 const Discord = require("discord.js");
 var randomstring = require("randomstring");
 const fs = require("fs");
+const {createChannel, initialChecks} = require("../helpers");
 
 module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
 
-    async function createChannel(ticketCh, author, staff, tcMessages) {
-        let ch = await message.guild.createChannel(`${ticketCh}`, "text", [{
-            id: author,
-            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
-          },
-          {
-            id: staff,
-            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
-          },
-          {
-            id: message.guild.defaultRole,
-            deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
-          }]);
-          ch = await ch.send(tcMessages[0]).then(msg => {
-            ch.send(tcMessages[1]);
-          });
-    }
+    // Perform checks for staff role, blacklist & ticket-log channel
+    if (initialChecks(message, staffrole) !== 2) return;
 
-    //Creation of Ticket
+    let staffId = message.guild.roles.cache.find(role => role.name === staffrole);
+
     let ticketID = randomstring.generate({
-      length: 5,
-      capitalization: "lowercase"
+        length: 5,
+        capitalization: 'lowercase'
     });
-    let ticketCh = `ticket-${ticketID}`;
+    let ticketName = 'ticket-' + ticketID;
 
-    while (message.guild.channels.find("name", ticketCh)) {
-        ticketID = randomstring.generate({
-          length: 5,
-          capitalization: "lowercase"
-        });
-        ticketCh = `ticket-${ticketID}`;
+    // Cancel if the channel with that name already exists
+    let temp = message.guild.channels.cache.find(ch => ch.name === ticketName);
+    if (temp !== undefined) {
+        return message.channel.send('Please execute the command again.');
     }
 
-    let createdAt = message.createdAt;
+    let reason = (args[0] !== undefined) ? args.join(" ") : "Not defined";
 
-    let author = message.author.id;
-    let staff = message.guild.roles.find("name", staffrole);
-    let blacklisted = message.guild.roles.find("name", "Blacklisted");
+    let initialMsgs = [
+        new Discord.MessageEmbed()
+            .setDescription(`Hey, ${message.author}!\nThanks for opening a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nAmbyre Nodes Staff`)
+            .setColor("#74A33B")
+            .addField("Ticket-ID", ticketName, true)
+            .addField("Reason", reason, true),
+        `(${staffId}) Attention! ${message.author} has just opened a support ticket!`
+    ]
 
-    if (!blacklisted){
-        console.log(`There is no role called "Blacklisted"`);
-    }
-    if (!staff){
-        message.channel.send("Error!, please contact a server admin.");
-        return console.log(`Please create a role named ${staffrole}!`);
-    }
-    
-    var ticketlog = message.guild.channels.find("name", "ticket-log");
-    if (!ticketlog) return message.channel.send("Error!, no `ticket-log` channel! Contact a server admin.");
-    if (message.member.roles.find("name", "Blacklisted")) return message.channel.send("You are not allowed to make a ticket. Ask a staff member to make it for you.");
+    let logEmbed = new Discord.MessageEmbed()
+        .setDescription("**Ticket Created**")
+        .setColor("#3def15")
+        .addField("Created by:", `${message.author}`, true)
+        .addField("Ticket-ID:", `${ticketName}`, true)
+        .addField("Created At:", `${message.createdAt}`, true)
+        .addField("Reason:", `${reason}`, true)
+        .setFooter(`User ID: ${message.author}`);
 
-    function reason() {
-      if(args[0]) tcRs = args.join(" ");
-      else tcRs = "Not defined";
-    }
-    reason();
-    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, `${author}\nThe above is your ID.\nReason: ${tcRs}\n\n`, (err) => {
-      if (err) throw err;
-    });
-
-    let tcMessage0 = new Discord.RichEmbed()
-      .setDescription(`Hey, <@${author}>!\nThanks for opening a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nAmbyre Nodes Staff`)
-      .setColor("#74A33B")
-      .addField("Ticket-ID", ticketCh, true)
-      .addField("Reason", tcRs, true);
-    let tcMessage1 = `(${staff}) Attention! Someone has just opened a support ticket!`
-    let tcMessages = [tcMessage0, tcMessage1];
-    createChannel(ticketCh, author, staff, tcMessages);
-
-    message.channel.send("Ticket Created!");
-    var createdticketEmbed = new Discord.RichEmbed()
-      .setDescription("**Ticket Created**")
-      .setColor("#3def15")
-      .addField("Created by:", `${message.author}`, true)
-      .addField("Ticket-ID:", `${ticketCh}`, true)
-      .addField("Created At:", `${createdAt}`, true)
-      .addField("Reason:", `${tcRs}`, true)
-      .setFooter(`User ID: ${author}`);
-    ticketlog.send(createdticketEmbed);
+    // Log the creation into the ticket log
+    createChannel(message, ticketName, staffId, initialMsgs, logEmbed);
 }
-
 
 module.exports.help = {
     name: "newticket"

@@ -27,7 +27,7 @@ fs.readdir("./commands/", (err, files) => {
 //On Ready
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is online`);
-  bot.user.setActivity("-help");
+  bot.user.setActivity(`${botconfig.prefix}help`);
 });
 
 //Folder check
@@ -40,7 +40,7 @@ bot.on("message", async message => {
   if(message.author.bot) return;
   if(message.channel.type === "dm") return;
  
-  let prefix = "-";
+  let prefix = botconfig.prefix;
   let staffrole = "Support";
   let adminrole = "Development";
 
@@ -51,6 +51,12 @@ bot.on("message", async message => {
   let commandfile = bot.commands.get(cmd.slice(prefix.length))
   if(commandfile) commandfile.run(bot, message, args, prefix, staffrole, adminrole);
 
+  logMessage(message);
+
+});
+
+function logMessage(message) {
+
   if(message.channel.name.startsWith("ticket-")) {
 
     let content = message.content;
@@ -58,14 +64,11 @@ bot.on("message", async message => {
     let createdAt = message.createdAt;
 
     let ticketCh = message.channel.name;
-    let msg = `[${createdAt}]` + ` ${author}: ` + content + `\n`;
-    fs.appendFile(`./ticketChat-logs/${ticketCh}.txt`, msg, (err) => {
-      if (err) throw err;
-    });
-
+    
+    let logFile = fs.readFileSync()
   }
-
-});
+  
+}
 
 //Login
 bot.login(botconfig.token);

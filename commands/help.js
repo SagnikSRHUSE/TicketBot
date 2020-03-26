@@ -5,7 +5,7 @@ module.exports.run = async (bot, message, args, prefix) => {
 
     if(!args[0]){
 
-        let help = new Discord.RichEmbed()
+        let help = new Discord.MessageEmbed()
         .setDescription(`**Help Menu**\nDo ${prefix}help [type]`)
         .addField("Tickets:", "Info for tickets.")
         .setFooter("<> = Required | [] = optional")
@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args, prefix) => {
 
     } else if(args[0].toLowerCase() === "tickets" || args[0].toLowerCase() === "ticket"){
 
-        let ticketHelp = new Discord.RichEmbed()
+        let ticketHelp = new Discord.MessageEmbed()
         .setDescription(`**Tickets**\nList of all Commands`)
         .addField(`${prefix}newticket [reason]`, "Create a ticket. You can optionally provide a reason.")
         .addField(`${prefix}ticketfor <@user> [reason]`, "Staff Only! Creates a ticket for the mentioned user.")
@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args, prefix) => {
         message.channel.send(ticketHelp);
 
     } else {
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
         .setDescription(":stop_sign: Topic not found!")
         .setFooter("Ambyre Nodes - my.ambyrenodes.net");
 
