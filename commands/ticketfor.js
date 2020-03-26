@@ -9,8 +9,8 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
     if (initialChecks(message, staffrole) !== 2) return;
 
     // Get the mentioned user
-    if(!message.mentions.users.first()) return message.channel.send("Please mention a user.");
-    var mention = message.mentions.users.first().id;
+    var mention = message.mentions.users.first();
+    if(mention === undefined) return message.channel.send("Please mention a user.");
 
     let staffId = message.guild.roles.cache.find(role => role.name === staffrole);
 
@@ -45,10 +45,10 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         .addField("Created for:", `${mention}`, true)
         .addField("Created At:", `${message.createdAt}`, false)
         .addField("Reason:", `${reason}`, false)
-        .setFooter("User ID: " + mention);
+        .setFooter("User ID: " + mention.id);
 
     // Log the creation into the ticket log
-    createChannel(message, ticketName, staffId, initialMsgs, logEmbed, mention);
+    createChannel(message, ticketName, staffId, initialMsgs, logEmbed, mention.id);
 }
 
 module.exports.help = {
