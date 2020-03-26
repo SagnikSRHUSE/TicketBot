@@ -47,5 +47,5 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
 }
 
 module.exports.help = {
-    name: "newticket"
+    name: "ticketfor"
 }

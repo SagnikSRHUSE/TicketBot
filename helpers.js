@@ -27,6 +27,15 @@ async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed
         permissionOverwrites:  perms
     })
         .then(channel => {
+
+            // Move the channel to the tickets category
+            let ticketCat = message.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'tickets');
+            if (ticketCat !== undefined) {
+                channel.setParent(ticketCat, { lockPermissions: false })
+                    .catch(console.error);
+            }
+
+            console.log('No category name Tickets found!');
             
             // Send the messages
             if (initialMsgs === undefined) return;
