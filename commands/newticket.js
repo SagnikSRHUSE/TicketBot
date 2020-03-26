@@ -40,7 +40,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         .addField("Ticket-ID:", `${ticketName}`, true)
         .addField("Created At:", `${message.createdAt}`, false)
         .addField("Reason:", `${reason}`, false)
-        .setFooter("User ID: " + "message.author");
+        .setFooter("User ID: " + message.author);
 
     // Log the creation into the ticket log
     createChannel(message, ticketName, staffId, initialMsgs, logEmbed);
