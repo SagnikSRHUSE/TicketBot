@@ -49,7 +49,7 @@ bot.on("message", async message => {
   let args = messageArray.slice(1);
 
   let commandfile = bot.commands.get(cmd.slice(prefix.length))
-  if(commandfile) commandfile.run(bot, message, args, prefix, staffrole, adminrole);
+  if (commandfile) commandfile.run(bot, message, args, prefix, staffrole, adminrole);
 
   // Log messages to the database
   // TODO

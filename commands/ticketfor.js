@@ -8,6 +8,9 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
     // Perform checks for staff role, blacklist & ticket-log channel
     if (initialChecks(message, staffrole) !== 2) return;
 
+    // Check if the author is a staff member
+    if (message.member.roles.cache.find(role => role.name === staffrole) === undefined) return message.channel.send("Sorry, you can't create a ticket for someone else.");
+
     // Get the mentioned user
     var mention = message.mentions.users.first();
     if(mention === undefined) return message.channel.send("Please mention a user.");
