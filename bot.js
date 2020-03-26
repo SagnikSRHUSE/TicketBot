@@ -51,24 +51,10 @@ bot.on("message", async message => {
   let commandfile = bot.commands.get(cmd.slice(prefix.length))
   if(commandfile) commandfile.run(bot, message, args, prefix, staffrole, adminrole);
 
-  logMessage(message);
+  // Log messages to the database
+  // TODO
 
 });
-
-function logMessage(message) {
-
-  if(message.channel.name.startsWith("ticket-")) {
-
-    let content = message.content;
-    let author = message.author.id;
-    let createdAt = message.createdAt;
-
-    let ticketCh = message.channel.name;
-    
-    let logFile = fs.readFileSync()
-  }
-  
-}
 
 //Login
 bot.login(botconfig.token);
