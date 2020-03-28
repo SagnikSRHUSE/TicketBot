@@ -59,15 +59,20 @@ bot.on("message", async message => {
   // Log messages to the database
   let chName = message.channel.name
   if (chName.startsWith('ticket_')) {
-    logMessage(message);
+    logMessage(message, client);
   }
 
 });
 
-function logMessage(message) {
+function logMessage(message, client) {
 
   let ticketName = message.channel.name;
 
+  let query = 'INSERT INTO $1~ (content, author, time) VALUES ($2, $3, $4)'
+  let values = [ticketName, message.content, message.author.id, message.createdAt]
+  
+  client.none(query, values)
+    .catch(e => console.error(e.stack));
   
 }
 
