@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, cl
         length: 5,
         capitalization: 'lowercase'
     });
-    let ticketName = 'ticket-' + ticketID;
+    let ticketName = 'ticket_' + ticketID;
 
     // Cancel if the channel with that name already exists
     let temp = message.guild.channels.cache.find(ch => ch.name === ticketName);
