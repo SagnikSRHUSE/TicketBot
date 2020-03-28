@@ -46,8 +46,12 @@ async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed
             });
 
             // Insert info into the database
-            let query = 'INSERT INTO ticket_log(author, ticketfor, reason, openedat, open) VALUES($1, $2, $3, $4, $5) RETURNING *'
-            let values = [message.author.id, mentionedId, (reason === 'Not defined') ? undefined : reason, message.createdAt, true]
+            let query;
+            let values;
+
+            // Log the ticket creation to the database
+            query = 'INSERT INTO ticket_log(author, ticketfor, reason, openedat, open) VALUES($1, $2, $3, $4, $5) RETURNING *'
+            values = [message.author.id, mentionedId, (reason === 'Not defined') ? undefined : reason, message.createdAt, true]
 
             client.one(query, values)
                 .then(res => {
