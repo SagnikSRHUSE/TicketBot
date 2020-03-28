@@ -1,5 +1,6 @@
 const botconfig = require("./botconfig.json");
 const Discord = require("discord.js");
+const pgp = require('pg-promise')();
 const fs = require("fs");
 
 const bot = new Discord.Client({disableEveryone: true});
@@ -30,10 +31,14 @@ bot.on("ready", async () => {
   bot.user.setActivity(`${botconfig.prefix}help`);
 });
 
-//Folder check
-if (!fs.existsSync("./ticketChat-logs")){
-  fs.mkdirSync("./ticketChat-logs");
-}
+// Connect to DB
+const client = pgp({
+  host: 'localhost',
+  port: 54320,
+  database: 'tickets',
+  user: 'postgres',
+  password: '12345',
+})
 
 //On Message
 bot.on("message", async message => {
@@ -49,12 +54,22 @@ bot.on("message", async message => {
   let args = messageArray.slice(1);
 
   let commandfile = bot.commands.get(cmd.slice(prefix.length))
-  if (commandfile) commandfile.run(bot, message, args, prefix, staffrole, adminrole);
+  if (commandfile) commandfile.run(bot, message, args, prefix, staffrole, adminrole, client);
 
   // Log messages to the database
-  // TODO
+  let chName = message.channel.name
+  if (chName.startsWith('ticket_')) {
+    logMessage(message);
+  }
 
 });
+
+function logMessage(message) {
+
+  let ticketName = message.channel.name;
+
+  
+}
 
 //Login
 bot.login(botconfig.token);

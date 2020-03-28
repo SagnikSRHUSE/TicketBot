@@ -3,7 +3,7 @@ var randomstring = require("randomstring");
 const fs = require("fs");
 const {createChannel, initialChecks} = require("../helpers");
 
-module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
+module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, client) => {
 
     // Perform checks for staff role, blacklist & ticket-log channel
     if (initialChecks(message, staffrole) !== 2) return;
@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         length: 5,
         capitalization: 'lowercase'
     });
-    let ticketName = 'ticket-' + ticketID;
+    let ticketName = 'ticket_' + ticketID;
 
     // Cancel if the channel with that name already exists
     let temp = message.guild.channels.cache.find(ch => ch.name === ticketName);
@@ -43,7 +43,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         .setFooter("User ID: " + message.author);
 
     // Log the creation into the ticket log
-    createChannel(message, ticketName, staffId, initialMsgs, logEmbed);
+    createChannel(message, ticketName, staffId, initialMsgs, logEmbed, client, reason);
 }
 
 module.exports.help = {

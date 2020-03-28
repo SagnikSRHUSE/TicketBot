@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed, mentionedId) {
+async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed, client, reason, mentionedId) {
 
     let perms = [
         {
@@ -46,8 +46,29 @@ async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed
             });
 
             // Insert info into the database
-            // TODO
-            console.log('TODO log into database!')
+            let query = 'INSERT INTO ticket_log(author, ticketfor, reason, openedat, open) VALUES($1, $2, $3, $4, $5) RETURNING *'
+            let values = [message.author.id, mentionedId, (reason === 'Not defined') ? undefined : reason, message.createdAt, true]
+
+            client.one(query, values)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(e => console.error(e.stack));
+
+            // Create a new table for the ticket messages to be stored
+            query = `CREATE TABLE $1~(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                content TEXT NOT NULL,
+                author BIGINT NOT NULL,
+                time TIMESTAMP NOT NULL
+            )`
+            values = [chName]
+
+            client.none(query, values)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(e => console.error(e.stack));
 
             // Log into the ticket-log channel
             let ticketlogCh = message.guild.channels.cache.find(ch => ch.name === 'ticket-log');
