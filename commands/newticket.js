@@ -9,20 +9,15 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, cl
     if (initialChecks(message, staffrole) !== 2) return;
 
     let staffId = message.guild.roles.cache.find(role => role.name === staffrole);
-
-    let ticketID = randomstring.generate({
-        length: 5,
-        capitalization: 'lowercase'
-    });
-    let ticketName = 'ticket_' + ticketID;
-
-    // Cancel if the channel with that name already exists
-    let temp = message.guild.channels.cache.find(ch => ch.name === ticketName);
-    if (temp !== undefined) {
-        return message.channel.send('Please execute the command again.');
-    }
-
     let reason = (args[0] !== undefined) ? args.join(" ") : "Not defined";
+    
+    // Log the ticket creation to the database
+    query = 'INSERT INTO ticket_log(author, reason, opened_at, open) VALUES($1, $2, $3, $4) RETURNING *'
+    values = [message.author.id, (reason === 'Not defined') ? undefined : reason, message.createdAt, true]
+    
+    let ticketEntry = await client.one(query, values);
+    let ticketID = parseInt(ticketEntry.id);
+    let ticketName = 'ticket_' + ticketID;
 
     let initialMsgs = [
         new Discord.MessageEmbed()
@@ -42,7 +37,6 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, cl
         .addField("Reason:", `${reason}`, false)
         .setFooter("User ID: " + message.author);
 
-    // Log the creation into the ticket log
     createChannel(message, ticketName, staffId, initialMsgs, logEmbed, client, reason);
 }
 

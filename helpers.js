@@ -33,9 +33,10 @@ async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed
             if (ticketCat !== undefined) {
                 channel.setParent(ticketCat, { lockPermissions: false })
                     .catch(console.error);
+            } else {
+                console.log('No category name Tickets found!');
             }
 
-            console.log('No category name Tickets found!');
             
             // Send the messages
             if (initialMsgs === undefined) return;
@@ -45,33 +46,16 @@ async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed
                 
             });
 
-            // Insert info into the database
-            let query;
-            let values;
-
-            // Log the ticket creation to the database
-            query = 'INSERT INTO ticket_log(author, ticketfor, reason, openedat, open) VALUES($1, $2, $3, $4, $5) RETURNING *'
-            values = [message.author.id, mentionedId, (reason === 'Not defined') ? undefined : reason, message.createdAt, true]
-
-            client.one(query, values)
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(e => console.error(e.stack));
-
             // Create a new table for the ticket messages to be stored
-            query = `CREATE TABLE $1~(
+            let query = `CREATE TABLE $1~(
                 id BIGSERIAL NOT NULL PRIMARY KEY,
                 content TEXT NOT NULL,
                 author BIGINT NOT NULL,
                 time TIMESTAMP NOT NULL
             )`
-            values = [chName]
+            let values = [chName]
 
             client.none(query, values)
-                .then(res => {
-                    console.log(res)
-                })
                 .catch(e => console.error(e.stack));
 
             // Log into the ticket-log channel

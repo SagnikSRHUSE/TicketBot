@@ -16,20 +16,16 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, cl
     if(mention === undefined) return message.channel.send("Please mention a user.");
 
     let staffId = message.guild.roles.cache.find(role => role.name === staffrole);
+    let reason = (args[1] !== undefined) ? args.join(" ").substring(22) : "Not defined";
 
-    let ticketID = randomstring.generate({
-        length: 5,
-        capitalization: 'lowercase'
-    });
+    // Log the ticket creation to the database
+    let query = 'INSERT INTO ticket_log(author, ticketfor, reason, opened_at, open) VALUES($1, $2, $3, $4, $5) RETURNING *'
+    let values = [message.author.id, mention.id, (reason === 'Not defined') ? undefined : reason, message.createdAt, true]
+    
+    // Set the Ticket ID
+    let ticketEntry = await client.one(query, values);
+    let ticketID = parseInt(ticketEntry.id);
     let ticketName = 'ticket_' + ticketID;
-
-    // Cancel if the channel with that name already exists
-    let temp = message.guild.channels.cache.find(ch => ch.name === ticketName);
-    if (temp !== undefined) {
-        return message.channel.send('Please execute the command again.');
-    }
-
-    let reason = (args[1] !== undefined) ? args.join(" ").substr(22) : "Not defined";
 
     let initialMsgs = [
         new Discord.MessageEmbed()

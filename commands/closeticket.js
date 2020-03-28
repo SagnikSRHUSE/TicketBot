@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
-module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
+module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, client) => {
 
     let channel = message.channel;
     let channelName = message.channel.name;
@@ -22,7 +22,10 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         .then(() => {
 
             // Update DB
-            // TODO
+            let query = 'UPDATE ticket_log SET open = false, closed_at = $1 WHERE id = $2'
+            let values = [message.createdAt, parseInt(channelName.substring(7))]
+            client.none(query, values)
+                .catch(console.error);
 
             // Log the deletion of ticket into the log channel
             let closeTicket = new Discord.MessageEmbed()
