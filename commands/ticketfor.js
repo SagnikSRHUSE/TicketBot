@@ -3,7 +3,7 @@ var randomstring = require("randomstring");
 const fs = require("fs");
 const {createChannel, initialChecks} = require("../helpers");
 
-module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) => {
+module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, client) => {
 
     // Perform checks for staff role, blacklist & ticket-log channel
     if (initialChecks(message, staffrole) !== 2) return;
@@ -51,7 +51,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole) =>
         .setFooter("User ID: " + mention.id);
 
     // Log the creation into the ticket log
-    createChannel(message, ticketName, staffId, initialMsgs, logEmbed, mention.id);
+    createChannel(message, ticketName, staffId, initialMsgs, logEmbed, client, reason, mention.id);
 }
 
 module.exports.help = {
