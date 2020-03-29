@@ -58,6 +58,8 @@ bot.on("message", async message => {
 
   // Log messages to the database
   let chName = message.channel.name
+
+  if (botconfig.logMessage === false) return;
   if (chName.startsWith('ticket_')) {
     logMessage(message, client);
   }
@@ -71,6 +73,8 @@ bot.on('messageUpdate', async (oldMessage, newMessage) => {
 
   // Log messages to the database
   let chName = newMessage.channel.name
+
+  if (botconfig.logMessage === false) return;
   if (chName.startsWith('ticket_')) {
     logMessage(newMessage, client, oldMessage);
   }

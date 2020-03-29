@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const botconfig = require("./botconfig.json");
 
 async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed, client, reason, mentionedId) {
 
@@ -46,6 +47,13 @@ async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed
                 
             });
 
+
+            // Log into the ticket-log channel
+            let ticketlogCh = message.guild.channels.cache.find(ch => ch.name === 'ticket-log');
+            ticketlogCh.send(logEmbed);
+
+            if (botconfig.logMessage === false) return;
+
             // Create a new table for the ticket messages to be stored
             let query = `CREATE TABLE $1~(
                 id BIGSERIAL NOT NULL PRIMARY KEY,
@@ -60,10 +68,6 @@ async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed
 
             client.none(query, values)
                 .catch(e => console.error(e.stack));
-
-            // Log into the ticket-log channel
-            let ticketlogCh = message.guild.channels.cache.find(ch => ch.name === 'ticket-log');
-            ticketlogCh.send(logEmbed);                
 
         })
         .catch(console.error);
