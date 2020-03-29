@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.0.2",
-    "pg-promise": "^10.4.4"
+    "pg-promise": "^10.4.4",
+    "randomstring": "^1.1.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
