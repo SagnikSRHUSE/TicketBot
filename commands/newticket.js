@@ -1,6 +1,4 @@
 const Discord = require("discord.js");
-var randomstring = require("randomstring");
-const fs = require("fs");
 const {createChannel, initialChecks} = require("../helpers");
 
 module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, client) => {
