@@ -64,12 +64,24 @@ bot.on("message", async message => {
 
 });
 
-function logMessage(message, client) {
+bot.on('messageUpdate', async (oldMessage, newMessage) => {
+
+  if(newMessage.author.bot) return;
+  if(newMessage.channel.type === "dm") return;
+
+  // Log messages to the database
+  let chName = newMessage.channel.name
+  if (chName.startsWith('ticket_')) {
+    logMessage(newMessage, client, oldMessage);
+  }
+})
+
+function logMessage(message, client, oldMessage) {
 
   let ticketName = message.channel.name;
 
-  let query = 'INSERT INTO $1~ (content, author, time) VALUES ($2, $3, $4)'
-  let values = [ticketName, message.content, message.author.id, message.createdAt]
+  let query = (oldMessage === undefined) ? 'INSERT INTO $1~ (content, author, message_id, edited, time) VALUES ($2, $3, $4, $5, $6)' : 'INSERT INTO $1~ (content, author, message_id, edited, time, old_message) VALUES ($2, $3, $4, $5, $6, $7)'
+  let values = (oldMessage === undefined) ? [ticketName, message.content, message.author.id, message.id, false, message.createdAt] : [ticketName, message.content, message.author.id, message.id, true, message.createdAt, oldMessage.content]
   
   client.none(query, values)
     .catch(e => console.error(e.stack));

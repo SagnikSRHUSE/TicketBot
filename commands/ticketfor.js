@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args, prefix, staffrole, adminrole, cl
 
     let initialMsgs = [
         new Discord.MessageEmbed()
-            .setDescription(`Hey, ${mention}!\n${message.author} has created a support ticket!\nOur support team will be here shortly!\n\nKind Regards,\nAmbyre Nodes Staff`)
+            .setDescription(`Hey, ${mention}!\n${message.author} has created a support ticket for you!\nOur support team will be here shortly!\n\nKind Regards,\nAmbyre Nodes Staff`)
             .setColor("#74A33B")
             .addField("Ticket-ID", ticketName, true)
             .addField("Reason", reason, true),

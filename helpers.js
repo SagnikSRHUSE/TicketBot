@@ -51,7 +51,10 @@ async function createChannel(message, chName, staffRoleId, initialMsgs, logEmbed
                 id BIGSERIAL NOT NULL PRIMARY KEY,
                 content TEXT NOT NULL,
                 author BIGINT NOT NULL,
-                time TIMESTAMP NOT NULL
+                message_id BIGINT NOT NULL,
+                edited BOOLEAN NOT NULL,
+                time TIMESTAMP NOT NULL,
+                old_message TEXT
             )`
             let values = [chName]
 
