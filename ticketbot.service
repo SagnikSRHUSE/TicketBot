@@ -1,0 +1,17 @@
+[Unit]
+Description=Ticket Bot
+After=network.service
+
+[Service]
+User=root
+WorkingDirectory=/opt/ticketbot
+LimitNOFILE=4096
+PIDFile=/var/run/ticketbot/daemon.pid
+ExecStart=node /opt/ticketbot/bot.js
+Restart=on-failure
+StartLimitInterval=180
+StartLimitBurst=30
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
