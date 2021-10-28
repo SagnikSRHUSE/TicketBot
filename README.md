@@ -1,4 +1,4 @@
-# Ambyre Tickets
+# Ticket Bot
 
 ## backup branch is best branch
 
