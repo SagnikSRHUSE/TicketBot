@@ -3,7 +3,7 @@ const botconfig = require("../botconfig.json");
 
 module.exports.run = async (bot, message, args, prefix) => {
 
-    if(message.author.id !== "109883996019658752" && message.author.id !== "142416518888554497" && message.author.id !== "231978239063490560") return console.log(message.author.id + " tried to restart!");
+    if(!botconfig.superusers.includes(message.author.id)) return console.log(message.author.id + " tried to restart!");
 
     function login() {
         bot.login(botconfig.token);
